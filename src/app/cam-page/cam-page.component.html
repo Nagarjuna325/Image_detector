@@ -1,0 +1,67 @@
+<div class="container">
+  <div class="miniNav">
+    <div class="arrow-box" *ngIf="!isLoading && !showVideo">
+      <a href="/">
+        <div class="arrow-left"></div>
+      </a>
+    </div>
+    <button class="button3">Webcam Detection</button>
+    <button class="button2" (click)="switchImage()">Image Detection</button>
+  </div>
+
+  <div class="feed">
+    <img src="assets/cam.png" alt="cam-logo" *ngIf="!isLoading && !showVideo" />
+
+    <div class="loader" *ngIf="isLoading"></div>
+
+    <div *ngIf="errorMessage" class="error-message">
+      <h2>
+        {{ errorMessage }}
+      </h2>
+    </div>
+
+    <div>
+      <video
+        #videoElement
+        id="video"
+        autoplay
+        playsinline
+        [style.display]="isDetecting ? 'none' : 'block'"
+      ></video>
+    </div>
+
+    <canvas
+      #canvasElement
+      id="canvas"
+      [style.display]="isDetecting ? 'block' : 'none'"
+      [width]="videoElement.videoWidth"
+      [height]="videoElement.videoHeight"
+    ></canvas>
+  </div>
+
+  <button
+    class="button1"
+    (click)="startCamera()"
+    *ngIf="!isLoading && !showVideo"
+  >
+    Begin
+  </button>
+
+  <label *ngIf="showVideo && !errorMessage" class="toggle-switch">
+    <input
+      type="checkbox"
+      [(ngModel)]="isDetecting"
+      (change)="toggleDetection()"
+    />
+    <div class="toggle-switch-background">
+      <div
+        class="toggle-switch-handle"
+        [ngClass]="{ active: isDetecting }"
+      ></div>
+    </div>
+  </label>
+
+  <button class="button1" (click)="stopCamera()" id="red" *ngIf="showVideo">
+    Stop
+  </button>
+</div>
